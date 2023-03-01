@@ -4,7 +4,7 @@
   $%  state-0
   ==
 +$  state-0
-  $:  [%0 =recipies =comments =ratings =favs =ingredients]
+  $:  [%0 next-rid=@ud next-cid=@ud =recipies =comments =ratings =favs =ingredients]
   ==
 ::
 :: tables
@@ -19,7 +19,7 @@
 :: id types
 ::
 +$  rid   [=ship num=@ud]     :: recipie id
-+$  cid   [=rid num=@ud]      :: comment id
++$  cid   @ud                 :: comment id, just counts up from 0 to infinity
 +$  rate-id   [=rid =ship]    :: rating id (one rating per recipe per ship)
 ::
 :: enums
@@ -29,12 +29,29 @@
 ::
 :: core data types
 ::
-+$  recipe  [=rid title=@t prep=@rs prep-unit=time-unit cook=@rs cook-unit=time-unit servings=@ud ingredients=(list r-ing) directions=(list cord) images=(list cord) links=(list cord) created-at=@da updated-at=@da]
-+$  r-ing  [amt=@rs unit=quantity-unit name=@t optional=?]
++$  recipe    [=rid title=@t prep=@rs prep-unit=time-unit cook=@rs cook-unit=time-unit servings=@ud ingredients=(list r-ing) directions=(list cord) images=(list cord) links=(list cord) created-at=@da updated-at=@da]
++$  r-ing     [amt=@rs unit=quantity-unit name=@t optional=?]
++$  comment   [=cid =rid commenter=ship text=@t created-at=@da updated-at=@da]
++$  rating    @ud  :: 0-5 stars
+:: facts are per 100g
++$  ingredient  [name=@t calories=@ud fat=@rs protein=@rs carbs=@rs]
 
 +$  action
-  $%  [%create-recipe =recipe]
-      [%edit-recipe =recipe]
+  $%  [%create-recipe =inputable-recipe]
+      [%edit-recipe =rid =inputable-recipe]
       [%delete-recipe =rid]
+
+      [%create-comment =rid]
+      [%delete-comment =cid]
+
+      [%create-rating =rid]     :: always ship is src.bowl, since each ship only gets one rating
+      [%delete-rating =rid]     :: always ship is src.bowl
+
+      [%toggle-fav =rid fav=?]
+
+      [%create-ingredient =ingredient]
+      [%edit-ingredient =ingredient]
+      [%delete-ingredient name=@t]
   ==
++$  inputable-recipe  [title=@t prep=@rs prep-unit=time-unit cook=@rs cook-unit=time-unit servings=@ud ingredients=(list r-ing) directions=(list cord) images=(list cord) links=(list cord)]
 --

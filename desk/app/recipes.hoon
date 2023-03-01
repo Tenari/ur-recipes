@@ -1,5 +1,5 @@
-/-  *lift
-/+  default-agent, dbug, lift-exercises, pokes=lift-actions, httplib=lift-http
+/-  sur=recipes
+/+  default-agent, dbug, lib=recipes
 
 %-  agent:dbug
 =|  state-0
@@ -10,11 +10,7 @@
     default  ~(. (default-agent this %|) bowl)
 ++  on-init
   ^-  (quip card _this)
-  =.  exercises.state  (default-exercise-list:lift-exercises bowl)
-  =.  defaults.state  [%lbs %mi]
-  :_  this
-  :~  [%pass /eyre/connect %arvo %e %connect `/apps/lift %lift]
-  ==
+  `this
 ++  on-save   !>(state)
 ++  on-load
   |=  old=vase
@@ -23,23 +19,32 @@
 ++  on-poke
   |=  [=mark =vase]
   ^-  (quip card _this)
-  ?:  =(%handle-http-request mark)
-    =^  cards  state
-    (handle:httplib !<([@ta =inbound-request:eyre] vase) state bowl) :: returns [cards state]
-    [cards this]
-  ?>  =(%lift-action mark)
-  =/  act  !<(action vase)
-  ?>  =(our.bowl src.bowl)
+  ?>  =(%recipes-action mark)
+  =/  act  !<(action:sur vase)
   =^  cards  state
   ?-  -.act
-    %start-workout :: needs to return a list of cards and a new state
-      (start-workout:pokes state bowl)
-    %end-workout
-      (end-workout:pokes state bowl)
-    %add-lift
-      (add-lift:pokes +.act state bowl)
-    %add-set
-      (add-set:pokes +.act state bowl)
+    %create-recipe
+      (create-recipe:lib +.act state bowl)
+    %edit-recipe
+      (edit-recipe:lib +.act state bowl)
+    %delete-recipe
+      (delete-recipe:lib +.act state bowl)
+    %create-comment
+      (create-comment:lib +.act state bowl)
+    %delete-comment
+      (delete-comment:lib +.act state bowl)
+    %create-rating
+      (create-rating:lib +.act state bowl)
+    %delete-rating
+      (delete-rating:lib +.act state bowl)
+    %toggle-fav
+      (toggle-fav:lib +.act state bowl)
+    %create-ingredient
+      (create-ingredient:lib +.act state bowl)
+    %edit-ingredient
+      (edit-ingredient:lib +.act state bowl)
+    %delete-ingredient
+      (delete-ingredient:lib +.act state bowl)
   ==
   [cards this]
 ::
@@ -47,10 +52,8 @@
   |=  =path
   ^-  (unit (unit cage))
   ?+  path  (on-peek:default path)
-    [%x %history ~]
-      ``history+!>(history)
-    [%x %exercises ~]
-      ``exercises+!>(exercises)
+    [%x %recipes ~]
+      ``recipes+!>(recipes.state)
   ==
 ++  on-arvo   on-arvo:default
 ++  on-watch
