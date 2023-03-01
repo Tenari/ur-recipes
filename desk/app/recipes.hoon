@@ -1,4 +1,4 @@
-/-  sur=recipes
+/-  *versioned-state, sur=recipes
 /+  default-agent, dbug, lib=recipes
 
 %-  agent:dbug

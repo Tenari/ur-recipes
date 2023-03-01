@@ -96,7 +96,7 @@
 ::
 ++  delete-ingredient
 ::recipes &recipes-action [%delete-ingredient 'sour cream']
-  |=  [=ingredient:sur state=state-0 =bowl:gall]
+  |=  [name=@t state=state-0 =bowl:gall]
   ^-  (quip card state-0)
   [~ state]
 ::
@@ -115,14 +115,14 @@
       ^-  json
       %-  pairs
       :~  rid+(en-rid rid.recipe)
-          title+s+title.path-row
-          created-at+(time created-at.path-row)
-          updated-at+(time updated-at.path-row)
+          title+s+title.recipe
+          created-at+(time created-at.recipe)
+          updated-at+(time updated-at.recipe)
       ==
     ++  en-rid
       |=  =rid:sur
       ^-  json
-      s+(spat [(scot %p ship.rid) +:(numb num.rid) ~])
+      s+(spat [(scot %p ship.rid) (crip (en-json:html (numb num.rid))) ~])
     ++  metadata-to-json
       |=  m=(map cord cord)
       ^-  json
