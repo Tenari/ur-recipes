@@ -18,16 +18,16 @@
 :: enums
 ::
 +$  time-unit  ?(%mins %hrs)
-+$  quantity-unit  ?(%g %ml %oz %lb %l %gal %cup %tsp %tbsp %whole %pint %gal)
++$  quantity-unit  ?(%g %ml %oz %lb %l %gal %cup %tsp %tbsp %whole %pint)
 ::
 :: core data types
 ::
-+$  recipe    [=rid title=@t prep=@rs prep-unit=time-unit cook=@rs cook-unit=time-unit servings=@ud ingredients=(list r-ing) directions=(list cord) images=(list cord) links=(list cord) created-at=@da updated-at=@da]
-+$  r-ing     [amt=@rs unit=quantity-unit name=@t optional=?]
++$  recipe    [=rid title=@t prep=@rd prep-unit=time-unit cook=@rd cook-unit=time-unit servings=@ud ingredients=(list r-ing) directions=(list cord) images=(list cord) links=(list cord) created-at=@da updated-at=@da]
++$  r-ing     [amt=@rd unit=quantity-unit name=@t optional=?]
 +$  comment   [=cid =rid commenter=ship text=@t created-at=@da updated-at=@da]
 +$  rating    @ud  :: 0-5 stars
 :: facts are per 100g
-+$  ingredient  [name=@t calories=@ud fat=@rs protein=@rs carbs=@rs]
++$  ingredient  [name=@t calories=@ud fat=@rd protein=@rd carbs=@rd]
 
 +$  action
   $%  [%create-recipe =inputable-recipe]
@@ -46,5 +46,5 @@
       [%edit-ingredient =ingredient]
       [%delete-ingredient name=@t]
   ==
-+$  inputable-recipe  [title=@t prep=@rs prep-unit=time-unit cook=@rs cook-unit=time-unit servings=@ud ingredients=(list r-ing) directions=(list cord) images=(list cord) links=(list cord)]
++$  inputable-recipe  [title=@t prep=@rd prep-unit=time-unit cook=@rd cook-unit=time-unit servings=@ud ingredients=(list r-ing) directions=(list cord) images=(list cord) links=(list cord)]
 --

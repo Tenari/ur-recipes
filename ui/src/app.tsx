@@ -13,6 +13,37 @@ async function getRecipes(setRecipes) {
   setRecipes(response);
 }
 
+async function createRecipe(recipe) {
+  const response = (await api.poke({
+    app: 'recipes',
+    mark: 'recipes-action',
+    json: {
+      'create-recipe': recipe,
+    },
+  }));
+  console.log(response);
+}
+
+const fakeRecipe = {
+  title: 'Bread',
+  prep: 20,
+  'prep-unit': 'mins',
+  cook: 3,
+  'cook-unit': 'hrs',
+  servings: 3,
+  ingredients: [
+    {
+      amt: 300,
+      unit: 'g',
+      name: 'flour',
+      optional: false,
+    }
+  ],
+  directions: ['bake it'],
+  images: [],
+  links: []
+};
+
 export function App() {
   const [recipes, setRecipes] = useState([]);
 
@@ -32,6 +63,12 @@ export function App() {
         <button>Settings</button>
       </header>
       <div className="max-w-md space-y-6 py-20">
+        <button onClick={()=>createRecipe(fakeRecipe)}>add recipe</button>
+        <ul>
+        {recipes.map(r=> {
+          return <li key={r.rid}>{r.title}</li>
+        })}
+        </ul>
       </div>
     </main>
   );

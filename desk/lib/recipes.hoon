@@ -128,4 +128,106 @@
       ^-  json
       o+(~(rut by m) |=([k=cord v=cord] s+v))
   --
+++  dejs
+  =,  dejs:format
+  |%
+  ++  action
+    |=  jon=json
+    ^-  action:sur
+    =<  (decode jon)
+    |%
+    ++  decode
+      %-  of
+      :~  [%create-recipe inputable-recipe]
+          [%edit-recipe (ot ~[rid+rid recipe+inputable-recipe])]
+          [%delete-recipe rid]
+
+          [%create-comment rid]
+          [%delete-comment ni]
+          ::[%create-rating =rid]
+          ::[%delete-rating =rid]
+
+          ::[%toggle-fav =rid fav=?]
+
+          ::[%create-ingredient =ingredient]
+          ::[%edit-ingredient =ingredient]
+          ::[%delete-ingredient name=@t]
+      ==
+    ::
+    ++  inputable-recipe
+      %-  ot
+      :~  [%title so]
+          [%prep ne]
+          [%prep-unit se-tu]
+          [%cook ne]
+          [%cook-unit se-tu]
+          [%servings ni]
+          [%ingredients (ar ing)]
+          [%directions (ar so)]
+          [%images (ar so)]
+          [%links (ar so)]
+      ==
+    ::
+    ++  ing
+      %-  ot
+      :~  [%amt ne]
+          [%unit se-qu]
+          [%name so]
+          [%optional bo]
+      ==
+    ::
+    ++  rid
+      %+  cu
+        path-to-rid
+      pa
+    ::
+    ++  path-to-rid
+      |=  p=path
+      ^-  rid:sur
+      [`@p`(slav %p +2:p) `@ud`(slav %ud +6:p)]
+    ::
+    ++  se-tu
+      %+  cu
+        |=  t=@tas
+        ^-  time-unit:sur
+        ?+  t  !!
+          %mins  %mins
+          %hrs  %hrs
+        ==
+      (se %tas)
+    ::
+    ++  se-qu
+      %+  cu
+        |=  t=@tas
+        ^-  quantity-unit:sur
+        ?+  t  !!
+          %g    %g
+          %ml   %ml
+          %oz   %oz
+          %lb   %lb
+          %l    %l
+          %gal  %gal
+          %cup  %cup
+          %tsp  %tsp
+          %tbsp   %tbsp
+          %whole  %whole
+          %pint   %pint
+        ==
+      (se %tas)
+    ::
+    ++  dri   :: specify in integer milliseconds, returns a @dr
+      (cu |=(t=@ud ^-(@dr (div (mul ~s1 t) 1.000))) ni)
+    ::
+    ++  null-or-dri   :: specify in integer milliseconds, returns a @dr
+      (cu |=(t=@ud ^-(@dr (div (mul ~s1 t) 1.000))) null-or-ni)
+    ::
+    ++  null-or-ni  :: accepts either a null or a n+'123', and converts nulls to 0, non-null to the appropriate number
+      |=  jon=json
+      ^-  @ud
+      ?+  jon  !!
+        [%n *]  (rash p.jon dem)
+        ~       0
+      ==
+    --
+  --
 --
